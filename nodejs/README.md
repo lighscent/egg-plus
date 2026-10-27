@@ -16,8 +16,13 @@ cd nodejs/image
 ./build.sh
 ```
 
-Le workflow GitHub (`.github/workflows/docker-nodejs.yml`) build et publie auto vers `ghcr.io/lighscent/egg-plus:nodejs_XX` à chaque push sur `nodejs/image/**`, chaque lundi 4h, ou en manuel.
+Le workflow GitHub (`.github/workflows/docker-nodejs.yml`) build et publie auto vers `ghcr.io/lighscent/egg-plus:nodejs_XX` à chaque push sur `nodejs/image/**`, chaque lundi 4h, ou en manuel. Build natif par archi (amd64 + ARM, sans QEMU) puis fusion des manifestes.
 
 ## 2. Importer dans Pterodactyl
 
 Nests → Import Egg → colle `egg-nodejs.json`.
+
+## Demarrage : 2 modes
+
+- Fichier (`USE_CUSTOM_COMMAND=0`, defaut) : `MAIN_FILE` lancé via `node` (`.js`) ou `tsx` (`.ts`), avec `NODE_ARGS` en arguments et `NODE_ENV` exporté.
+- Commande (`USE_CUSTOM_COMMAND=1`) : exécute `START_COMMAND`, ex `npm start` ou `node --max-old-space-size=1024 bot.js`. Erreur claire si vide.
