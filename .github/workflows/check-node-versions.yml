@@ -2,8 +2,7 @@ name: Check Node.js versions
 
 on:
   schedule:
-    # Le 1er de chaque mois : detecte les nouvelles majeures supportees.
-    - cron: "0 5 1 * *"
+    - cron: "0 5 */3 * *"
   workflow_dispatch:
 
 permissions:
@@ -18,8 +17,8 @@ jobs:
       - run: python3 nodejs/image/check_versions.py
       - uses: peter-evans/create-pull-request@v8
         with:
-          commit-message: "feat(nodejs): sync versions avec le calendrier Node.js"
-          title: "feat(nodejs): nouvelles versions Node.js supportees"
-          body: "Ajout auto des majeures encore supportees (calendrier nodejs/Release). Les versions EOL ne sont jamais supprimees auto : a arbitrer a la main."
+          commit-message: "feat(nodejs): sync versions from the Node.js release calendar"
+          title: "feat(nodejs): new supported Node.js versions"
+          body: "Auto-adds still-supported majors (nodejs/Release calendar). EOL versions are never auto-removed: review manually."
           branch: bot/nodejs-versions
           delete-branch: true

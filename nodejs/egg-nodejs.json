@@ -4,15 +4,15 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2026-10-27T00:00:00+00:00",
+    "exported_at": "2026-10-27T20:42:36+00:00",
     "name": "Node.JS",
     "author": "augustin.pro.prs@gmail.com",
-    "description": "Egg Node.js generique : clone un repo git ou accepte un upload manuel, installe les dependances. Demarrage en 2 modes : fichier MAIN_FILE (.js via node, .ts via tsx) ou commande libre (switch + START_COMMAND).",
+    "description": "Generic Node.js egg: clones a git repo or accepts manual uploads, installs dependencies. Two start modes: MAIN_FILE file (.js via node, .ts via tsx) or free-form command (switch + START_COMMAND).",
     "features": [],
     "docker_images": {
-        "Nodejs 22 (LTS)": "ghcr.io/lighscent/egg-plus:nodejs_22",
+        "Nodejs 26 (Current)": "ghcr.io/lighscent/egg-plus:nodejs_26",
         "Nodejs 24 (LTS)": "ghcr.io/lighscent/egg-plus:nodejs_24",
-        "Nodejs 26 (Current)": "ghcr.io/lighscent/egg-plus:nodejs_26"
+        "Nodejs 22 (LTS)": "ghcr.io/lighscent/egg-plus:nodejs_22"
     },
     "file_denylist": [],
     "startup": "if [[ -d .git ]] && [[ {{AUTO_UPDATE}} == \"1\" ]]; then git pull; fi; export NODE_ENV={{NODE_ENV}}; if [[ ! -z ${NODE_PACKAGES} ]]; then /usr/local/bin/npm install ${NODE_PACKAGES}; fi; if [[ ! -z ${UNNODE_PACKAGES} ]]; then /usr/local/bin/npm uninstall ${UNNODE_PACKAGES}; fi; if [ -f /home/container/package.json ]; then /usr/local/bin/npm install; fi; if [[ {{USE_CUSTOM_COMMAND}} == \"1\" ]]; then if [[ -z \"{{START_COMMAND}}\" ]]; then echo \"USE_CUSTOM_COMMAND=1 but START_COMMAND is empty\" >&2; exit 1; fi; eval \"{{START_COMMAND}}\"; elif [[ \"${MAIN_FILE}\" == *.js ]]; then \"/usr/local/bin/node\" \"/home/container/${MAIN_FILE}\" ${NODE_ARGS}; else \"/usr/local/bin/tsx\" \"/home/container/${MAIN_FILE}\" ${NODE_ARGS}; fi",
@@ -32,7 +32,7 @@
     "variables": [
         {
             "name": "Main file",
-            "description": "Fichier de demarrage, .js ou .ts (ex: index.js, src/index.ts).",
+            "description": "Startup file, .js or .ts (e.g. index.js, src/index.ts).",
             "env_variable": "MAIN_FILE",
             "default_value": "index.js",
             "user_viewable": true,
@@ -72,7 +72,7 @@
         },
         {
             "name": "Auto Update",
-            "description": "Pull les derniers fichiers au demarrage si repo git. 0 = non, 1 = oui.",
+            "description": "Pull latest files on startup when using a git repo. 0 = no, 1 = yes.",
             "env_variable": "AUTO_UPDATE",
             "default_value": "0",
             "user_viewable": true,
@@ -82,7 +82,7 @@
         },
         {
             "name": "Git Repo Address",
-            "description": "Repo git a cloner, ex: https://github.com/user/repo",
+            "description": "Git repo to clone, e.g. https://github.com/user/repo",
             "env_variable": "GIT_ADDRESS",
             "default_value": "",
             "user_viewable": true,
@@ -92,7 +92,7 @@
         },
         {
             "name": "Install Branch",
-            "description": "Branche a installer (vide = branche par defaut).",
+            "description": "Branch to install (empty = default branch).",
             "env_variable": "BRANCH",
             "default_value": "",
             "user_viewable": true,
@@ -102,7 +102,7 @@
         },
         {
             "name": "Git Username",
-            "description": "Utilisateur git pour repo prive.",
+            "description": "Git username for private repos.",
             "env_variable": "USERNAME",
             "default_value": "",
             "user_viewable": true,
@@ -112,7 +112,7 @@
         },
         {
             "name": "Git Access Token",
-            "description": "Token d'acces git (https://github.com/settings/tokens).",
+            "description": "Git access token (https://github.com/settings/tokens).",
             "env_variable": "ACCESS_TOKEN",
             "default_value": "",
             "user_viewable": true,
@@ -122,7 +122,7 @@
         },
         {
             "name": "User Uploaded Files",
-            "description": "Saute l'install git si upload manuel. 0 = false, 1 = true.",
+            "description": "Skip git install on manual upload. 0 = false, 1 = true.",
             "env_variable": "USER_UPLOAD",
             "default_value": "0",
             "user_viewable": true,
@@ -132,7 +132,7 @@
         },
         {
             "name": "Additional Node packages",
-            "description": "Packages supplementaires a installer, separes par espaces.",
+            "description": "Extra packages to install, space-separated.",
             "env_variable": "NODE_PACKAGES",
             "default_value": "",
             "user_viewable": true,
@@ -142,7 +142,7 @@
         },
         {
             "name": "Uninstall Node packages",
-            "description": "Packages a desinstaller, separes par espaces.",
+            "description": "Packages to uninstall, space-separated.",
             "env_variable": "UNNODE_PACKAGES",
             "default_value": "",
             "user_viewable": true,
@@ -152,7 +152,7 @@
         },
         {
             "name": "Additional Arguments.",
-            "description": "Arguments supplementaires passes a node/tsx.",
+            "description": "Extra arguments passed to node/tsx.",
             "env_variable": "NODE_ARGS",
             "default_value": "",
             "user_viewable": true,

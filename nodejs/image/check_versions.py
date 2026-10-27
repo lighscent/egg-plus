@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Sync nodejs/versions.json + egg docker_images avec le calendrier Node.js.
+"""Sync nodejs/versions.json + egg docker_images with the Node.js release calendar.
 
-Politique : ajoute les majeures supportees manquantes
-(start <= aujourd'hui <= end selon nodejs/Release schedule.json).
-Ne supprime jamais les EOL (arbitrage manuel : des serveurs
-peuvent encore referencer l'ancienne image).
+Policy: add missing supported majors
+(start <= today <= end per nodejs/Release schedule.json).
+Never remove EOL versions (manual call: servers
+may still reference the old image).
 """
 import json
 import urllib.request
@@ -37,21 +37,21 @@ def main() -> None:
     versions = json.loads(VERSIONS_FILE.read_text())
     missing = [m for m in supported if m not in versions]
     if not missing:
-        print(f"OK, a jour au {today} : {versions}")
+        print(f"OK, up to date on {today}: {versions}")
         return
 
     versions = sorted(set(versions) | set(missing), key=int)
     VERSIONS_FILE.write_text(json.dumps(versions, indent=2) + "\n")
-    print(f"versions ajoutees : {missing}")
+    print(f"added versions: {missing}")
 
     egg = json.loads(EGG_FILE.read_text())
     for major in missing:
         egg["docker_images"][f"Nodejs {major}"] = f"{IMAGE_PREFIX}{major}"
     egg["docker_images"] = dict(
-        sorted(egg["docker_images"].items(), key=lambda kv: int(kv[0].split()[-1]))
+        sorted(egg["docker_images"].items(), key=lambda kv: int("".join(c for c in kv[0] if c.isdigit())))
     )
     EGG_FILE.write_text(json.dumps(egg, indent=4, ensure_ascii=False) + "\n")
-    print("egg-nodejs.json mis a jour")
+    print("egg-nodejs.json updated")
 
 
 if __name__ == "__main__":
