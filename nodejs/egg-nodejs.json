@@ -5,14 +5,14 @@
         "update_url": null
     },
     "exported_at": "2026-10-27T00:00:00+00:00",
-    "name": "xl1te",
+    "name": "Node.JS",
     "author": "augustin.pro.prs@gmail.com",
     "description": "Egg Node.js generique : clone un repo git ou accepte un upload manuel, installe les dependances. Demarrage en 2 modes : fichier MAIN_FILE (.js via node, .ts via tsx) ou commande libre (switch + START_COMMAND).",
     "features": [],
     "docker_images": {
-        "Nodejs 22": "ghcr.io/lighscent/egg-plus:nodejs_22",
-        "Nodejs 24": "ghcr.io/lighscent/egg-plus:nodejs_24",
-        "Nodejs 26": "ghcr.io/lighscent/egg-plus:nodejs_26"
+        "Nodejs 22 (LTS)": "ghcr.io/lighscent/egg-plus:nodejs_22",
+        "Nodejs 24 (LTS)": "ghcr.io/lighscent/egg-plus:nodejs_24",
+        "Nodejs 26 (Current)": "ghcr.io/lighscent/egg-plus:nodejs_26"
     },
     "file_denylist": [],
     "startup": "if [[ -d .git ]] && [[ {{AUTO_UPDATE}} == \"1\" ]]; then git pull; fi; export NODE_ENV={{NODE_ENV}}; if [[ ! -z ${NODE_PACKAGES} ]]; then /usr/local/bin/npm install ${NODE_PACKAGES}; fi; if [[ ! -z ${UNNODE_PACKAGES} ]]; then /usr/local/bin/npm uninstall ${UNNODE_PACKAGES}; fi; if [ -f /home/container/package.json ]; then /usr/local/bin/npm install; fi; if [[ {{USE_CUSTOM_COMMAND}} == \"1\" ]]; then if [[ -z \"{{START_COMMAND}}\" ]]; then echo \"USE_CUSTOM_COMMAND=1 but START_COMMAND is empty\" >&2; exit 1; fi; eval \"{{START_COMMAND}}\"; elif [[ \"${MAIN_FILE}\" == *.js ]]; then \"/usr/local/bin/node\" \"/home/container/${MAIN_FILE}\" ${NODE_ARGS}; else \"/usr/local/bin/tsx\" \"/home/container/${MAIN_FILE}\" ${NODE_ARGS}; fi",
