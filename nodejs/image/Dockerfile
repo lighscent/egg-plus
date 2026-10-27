@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN npm install --global npm@latest typescript tsx @types/node
+RUN npm install --global npm@latest typescript ts-node tsx @types/node
 
 ENV USER=container
 ENV HOME=/home/container
