@@ -1,11 +1,11 @@
 #!/bin/sh
 # Build + push tes images Node.js maison (multi-arch amd64/arm64).
-# Usage: REGISTRY=ghcr.io/mon-org/eggs ./build.sh
+# Usage: REGISTRY=ghcr.io/lighscent/egg-plus ./build.sh
 # Prerequis: docker buildx, `docker login ghcr.io`
 set -e
-REGISTRY="${REGISTRY:-ghcr.io/CHANGE-ME/eggs}"
+REGISTRY="${REGISTRY:-ghcr.io/lighscent/egg-plus}"
 cd "$(dirname "$0")"
-for v in 20 22 24 25 26; do
+for v in $(grep -o '[0-9][0-9]*' ../versions.json); do
   echo "== nodejs_$v =="
   docker buildx build --platform linux/amd64,linux/arm64 \
     --build-arg NODE_VERSION="$v" \

@@ -10,11 +10,9 @@
     "description": "Egg Node.js generique : clone un repo git ou accepte un upload manuel, installe les dependances et demarre MAIN_FILE (.js/.ts via tsx).",
     "features": [],
     "docker_images": {
-        "Nodejs 20": "ghcr.io/egg-plus/eggs:nodejs_20",
-        "Nodejs 22": "ghcr.io/egg-plus/eggs:nodejs_22",
-        "Nodejs 24": "ghcr.io/egg-plus/eggs:nodejs_24",
-        "Nodejs 25": "ghcr.io/egg-plus/eggs:nodejs_25",
-        "Nodejs 26": "ghcr.io/egg-plus/eggs:nodejs_26"
+        "Nodejs 22": "ghcr.io/lighscent/egg-plus:nodejs_22",
+        "Nodejs 24": "ghcr.io/lighscent/egg-plus:nodejs_24",
+        "Nodejs 26": "ghcr.io/lighscent/egg-plus:nodejs_26"
     },
     "file_denylist": [],
     "startup": "if [[ -d .git ]] && [[ {{AUTO_UPDATE}} == \"1\" ]]; then git pull; fi; if [[ ! -z ${NODE_PACKAGES} ]]; then /usr/local/bin/npm install ${NODE_PACKAGES}; fi; if [[ ! -z ${UNNODE_PACKAGES} ]]; then /usr/local/bin/npm uninstall ${UNNODE_PACKAGES}; fi; if [ -f /home/container/package.json ]; then /usr/local/bin/npm install; fi; if [[ \"${MAIN_FILE}\" == \"*.js\" ]]; then /usr/local/bin/node \"/home/container/${MAIN_FILE}\" ${NODE_ARGS}; else /usr/local/bin/tsx \"/home/container/${MAIN_FILE}\" ${NODE_ARGS}; fi",
