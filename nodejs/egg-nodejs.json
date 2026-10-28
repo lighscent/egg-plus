@@ -15,10 +15,10 @@
         "Nodejs 22 (LTS)": "ghcr.io/lighscent/egg-plus:nodejs_22"
     },
     "file_denylist": [],
-    "startup": "if [[ -d .git ]] && [[ {{AUTO_UPDATE}} == \"1\" ]]; then git pull; fi; export NODE_ENV={{NODE_ENV}}; if [[ ! -z ${NODE_PACKAGES} ]]; then /usr/local/bin/npm install ${NODE_PACKAGES}; fi; if [[ ! -z ${UNNODE_PACKAGES} ]]; then /usr/local/bin/npm uninstall ${UNNODE_PACKAGES}; fi; if [ -f /home/container/package.json ]; then /usr/local/bin/npm install; fi; if [[ {{USE_CUSTOM_COMMAND}} == \"1\" ]]; then if [[ -z \"{{START_COMMAND}}\" ]]; then echo \"USE_CUSTOM_COMMAND=1 but START_COMMAND is empty\" >&2; exit 1; fi; eval \"{{START_COMMAND}}\"; elif [[ \"${MAIN_FILE}\" == *.js ]]; then \"/usr/local/bin/node\" \"/home/container/${MAIN_FILE}\" ${NODE_ARGS}; else \"/usr/local/bin/tsx\" \"/home/container/${MAIN_FILE}\" ${NODE_ARGS}; fi",
+    "startup": "if [[ -d .git ]] && [[ {{AUTO_UPDATE}} == \"1\" ]]; then git pull; fi; export NODE_ENV={{NODE_ENV}}; if [[ ! -z ${NODE_PACKAGES} ]]; then /usr/local/bin/npm install ${NODE_PACKAGES}; fi; if [[ ! -z ${UNNODE_PACKAGES} ]]; then /usr/local/bin/npm uninstall ${UNNODE_PACKAGES}; fi; if [ -f /home/container/package.json ]; then /usr/local/bin/npm install; fi; echo \"Startup complete. Launching application...\"; if [[ {{USE_CUSTOM_COMMAND}} == \"1\" ]]; then if [[ -z \"{{START_COMMAND}}\" ]]; then echo \"USE_CUSTOM_COMMAND=1 but START_COMMAND is empty\" >&2; exit 1; fi; eval \"{{START_COMMAND}}\"; elif [[ \"${MAIN_FILE##*.}\" == \"js\" ]]; then \"/usr/local/bin/node\" \"/home/container/${MAIN_FILE}\" ${NODE_ARGS}; else \"/usr/local/bin/tsx\" \"/home/container/${MAIN_FILE}\" ${NODE_ARGS}; fi",
     "config": {
         "files": "{}",
-        "startup": "{\n    \"done\": [\n        \"change this text 1\",\n        \"change this text 2\"\n    ]\n}",
+        "startup": "{\n    \"done\": [\n        \"Startup complete. Launching application...\"\n    ]\n}",
         "logs": "{}",
         "stop": "^C"
     },

@@ -9,7 +9,7 @@ export INTERNAL_IP
 
 echo "Node.js Version: $(node -v)"
 
-MODIFIED_STARTUP=$(echo -e ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
+MODIFIED_STARTUP=$(echo -e "${STARTUP}" | sed -e 's/{{/${/g' -e 's/}}/}/g')
 echo ":/home/container$ ${MODIFIED_STARTUP}"
 
-eval ${MODIFIED_STARTUP}
+eval "${MODIFIED_STARTUP}"
